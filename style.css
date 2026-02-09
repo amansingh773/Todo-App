@@ -2,88 +2,195 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  --bg: #0f1220;
+  --card: #141833;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: #242859;
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  --radius: 14px;
 }
 
 body {
-  background: #f4f6f9;
-  padding: 40px;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,0.15), transparent 40%),
+    radial-gradient(900px 500px at 110% 10%, rgba(34,197,94,0.12), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  padding: 24px;
 }
 
-h2 {
+h1 {
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.todo-form {
-  max-width: 400px;
-  margin: 0 auto 30px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
+/* Form */
+#todo-form {
+  width: min(92vw, 420px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)), var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+  display: grid;
   gap: 10px;
 }
 
-.todo-form input,
-.todo-form textarea {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+#todo-form label {
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+#todo-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: #0b0e22;
+  color: var(--text);
   outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.todo-form button {
-  padding: 10px;
+#todo-form input::placeholder {
+  color: #6b7280;
+}
+
+#todo-form input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+}
+
+/* Add Button */
+#btn {
+  margin-top: 12px;
+  width: min(92vw, 420px);
+  padding: 12px 16px;
+  border-radius: 999px;
   border: none;
-  background: #4f46e5;
-  color: white;
-  border-radius: 6px;
   cursor: pointer;
+  background: linear-gradient(135deg, var(--primary), #22c55e);
+  color: #0b1020;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  box-shadow: 0 12px 30px rgba(99,102,241,0.35);
+  transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
-.todo-form button:hover {
-  background: #4338ca;
+#btn:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 16px 40px rgba(99,102,241,0.45);
 }
 
-.todo-container {
-  max-width: 500px;
-  margin: 0 auto;
+#btn:active {
+  transform: translateY(1px) scale(0.995);
+}
+
+/* Tasks Container */
+#container {
+  width: min(92vw, 420px);
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  max-height: calc(5 * 72px); /* 5 tasks ke baad scroll */
+  overflow-y: auto;
+  padding-right: 6px;
+
+  /* Hide scrollbar (but keep scroll) */
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge */
+}
+#container::-webkit-scrollbar {
+  display: none;              /* Chrome/Safari */
 }
 
-.task {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-  display: flex;
-  justify-content: space-between;
+/* Single Task Card */
+.textContainer {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)), #141833;
+  border: 1px solid #242859;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  display: grid;
+  grid-template-columns: 1fr auto; /* text | actions */
   align-items: center;
+  gap: 5px; /* text aur buttons ke beech fixed 5px */
+  transition: transform 0.08s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 }
 
-.task-content h4 {
-  margin-bottom: 5px;
+.textContainer:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35);
+  border-color: rgba(99,102,241,0.6);
 }
 
-.task-content p {
+/* Task Text */
+.textContainer h3 {
   font-size: 14px;
-  color: #555;
+  font-weight: 600;
+  color: #e5e7eb;
+  word-break: break-word;
+  white-space: normal;   /* wrap long text */
+  line-height: 1.4;
 }
 
-.delete-btn {
-  background: #ef4444;
+/* Buttons wrapper */
+.actions {
+  display: flex;
+  gap: 5px;      /* Delete & Edit ke beech fixed 5px */
+  flex-shrink: 0; /* buttons compress na hon */
+}
+
+/* Common Button Style */
+.del-btn,
+.edit-btn {
   border: none;
-  color: white;
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0b1020;
+  transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
-.delete-btn:hover {
-  background: #dc2626;
+/* Delete Button (premium coral) */
+.del-btn {
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  box-shadow: 0 8px 20px rgba(255, 95, 109, 0.35);
+}
+
+/* Edit Button (green) */
+.edit-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+}
+
+.del-btn:hover,
+.edit-btn:hover {
+  filter: brightness(1.05);
+}
+
+.del-btn:active,
+.edit-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 1.3rem; }
 }
